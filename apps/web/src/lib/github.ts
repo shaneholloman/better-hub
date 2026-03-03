@@ -987,6 +987,12 @@ async function fetchContributionsFromGitHub(token: string, username: string) {
 	}
 
 	const currentYear = new Date().getUTCFullYear();
+
+	// Ensure current year is always in the list
+	if (!contributionYears.includes(currentYear)) {
+		contributionYears.push(currentYear);
+	}
+
 	const historicalYears = contributionYears
 		.filter((year) => year !== currentYear)
 		.sort((a, b) => b - a);
@@ -1079,6 +1085,7 @@ async function fetchContributionsFromGitHub(token: string, username: string) {
 
 	return {
 		...calendar,
+		weeks: timelineWeeks.length > 0 ? timelineWeeks : calendar.weeks,
 		timelineWeeks,
 		contributionYears: contributionYears.sort((a, b) => b - a),
 		activity: {
